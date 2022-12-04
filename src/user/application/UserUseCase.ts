@@ -23,20 +23,36 @@ export class UserUseCase {
   }
 
   public registerUser = async (userData: Omit<UserEntity, 'id'>) => {
-    const userFoundForUsername = await this.userRepository.findUserByEmail(
+    const userFoundForUsername = await this.userRepository.findUserByUsername(
+      userData.username
+    )
+
+    if (userFoundForUsername)
+      throw {
+        status: 406,
+        error: 'El nombre de usuario ya esta en uso, utilice otro',
+      }
+
+    const userFoundForEmail = await this.userRepository.findUserByEmail(
       userData.email
     )
 
-    const userValue = new UserValue(userData)
-    const userCreated = await this.userRepository.registerUser(userValue)
+    if (userFoundForEmail)
+      throw {
+        status: 406,
+        error: 'El correo electrónico ya esta en uso, utilice otro',
+      }
 
-    if (!userCreated)
+    const userValue = new UserValue(userData)
+    const userRegistered = await this.userRepository.registerUser(userValue)
+
+    if (!userRegistered)
       throw {
         status: 404,
         error: 'El usuario no ha sido creado',
       }
 
-    return { status: 200, user: userCreated }
+    return { status: 200, user: userRegistered }
   }
 
   public loginUser = async ({

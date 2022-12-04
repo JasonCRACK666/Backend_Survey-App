@@ -8,4 +8,5 @@ export interface UserRepository {
   deleteUser: (id: string) => Promise<void>
   deleteAllUsers: () => Promise<void>
   updateUser: (id: string) => Promise<void>
+  findUserByUsername: (username: string) => Promise<UserEntity | null>
 }

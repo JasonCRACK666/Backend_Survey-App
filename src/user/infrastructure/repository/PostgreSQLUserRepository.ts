@@ -26,6 +26,14 @@ export class PostgreSQLUserRepository implements UserRepository {
     return user[0]
   }
 
+  public findUserByUsername = async (
+    username: string
+  ): Promise<UserEntity | null> => {
+    const query = `SELECT * FROM users WHERE username = $1`
+    const { rows: user } = await pool.query(query, [username])
+    return user[0]
+  }
+
   public registerUser = async (
     newUser: UserEntity
   ): Promise<UserEntity | null> => {
