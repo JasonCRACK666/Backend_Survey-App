@@ -5,10 +5,13 @@ export class AuthController {
   constructor(private userUseCase: UserUseCase) {}
 
   public postRegisterUser = async (req: Request, res: Response) => {
-    const { status, user } = await this.userUseCase.registerUserAndNotify(
-      req.body
-    )
-    res.status(status).json({ status, user })
+    try {
+      const { status, user } = await this.userUseCase.registerUser(req.body)
+      res.status(status).json({ status, user })
+    } catch (error) {
+      const err = error as { status: number; error: string }
+      res.status(err.status).json(err)
+    }
   }
 
   public postLoginUser = async (req: Request, res: Response) => {

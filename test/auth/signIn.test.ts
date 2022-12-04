@@ -11,7 +11,7 @@ beforeEach(async () => {
 
 describe('POST /api/auth/signIn', () => {
   describe('Data send is correctly', () => {
-    test('should return status 200 and Content-Type "Application JSON"', async () => {
+    test('should respond status 200 and Content-Type "Application JSON"', async () => {
       await api
         .post('/api/auth/signIn')
         .send({
@@ -22,7 +22,7 @@ describe('POST /api/auth/signIn', () => {
         .expect('Content-Type', /application\/json/)
     })
 
-    test('should return in object status code 200', async () => {
+    test('should return a JSON with a status code 200', async () => {
       const responseSignIn = await api.post('/api/auth/signIn').send({
         email: TEST_USER_CREATE.email,
         password: TEST_USER_CREATE.password,
@@ -31,7 +31,7 @@ describe('POST /api/auth/signIn', () => {
       expect(responseSignIn.body.status).toBe(200)
     })
 
-    test('should return in object a access token', async () => {
+    test('should return a JSON with a access token', async () => {
       const responseSignIn = await api.post('/api/auth/signIn').send({
         email: TEST_USER_CREATE.email,
         password: TEST_USER_CREATE.password,

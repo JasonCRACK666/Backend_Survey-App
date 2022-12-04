@@ -22,7 +22,11 @@ export class UserUseCase {
     return { status: 200, user }
   }
 
-  public registerUserAndNotify = async (userData: Omit<UserEntity, 'id'>) => {
+  public registerUser = async (userData: Omit<UserEntity, 'id'>) => {
+    const userFoundForUsername = await this.userRepository.findUserByEmail(
+      userData.email
+    )
+
     const userValue = new UserValue(userData)
     const userCreated = await this.userRepository.registerUser(userValue)
 
