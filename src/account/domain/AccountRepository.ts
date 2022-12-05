@@ -2,7 +2,7 @@ import { AccountEntity, AccountUserEntity } from './AccountEntity'
 
 export interface AccountRepository {
   updateAccount: (
-    userId: string,
+    accountId: string,
     accountData: Omit<
       AccountEntity,
       'id' | 'userId' | 'createdAt' | 'updatedAt'
@@ -12,4 +12,5 @@ export interface AccountRepository {
     accountData: AccountEntity
   ) => Promise<AccountUserEntity | null>
   findAccountByUserId: (userId: string) => Promise<AccountUserEntity | null>
+  findAccountById: (accountId: string) => Promise<AccountUserEntity | null>
 }

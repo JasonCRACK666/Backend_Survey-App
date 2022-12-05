@@ -6,14 +6,14 @@ export class AccountUseCase {
   constructor(private readonly accountRepository: AccountRepository) {}
 
   public getDetailAccount = async (
-    userId: string
+    id: string
   ): Promise<{ status: number; account: AccountUserEntity }> => {
-    const accountUser = await this.accountRepository.findAccountByUserId(userId)
+    const accountUser = await this.accountRepository.findAccountById(id)
 
     if (!accountUser)
       throw {
         status: 404,
-        error: `No se ha encontrado ninguna cuenta con el ID ${userId}`,
+        error: 'No se ha encontrado ninguna cuenta',
       }
 
     return {
@@ -40,7 +40,7 @@ export class AccountUseCase {
     }
   }
 
-  public updateAccountAndNotify = async (
+  public updateAccount = async (
     id: string,
     {
       address,

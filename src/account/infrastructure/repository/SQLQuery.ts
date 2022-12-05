@@ -1,4 +1,21 @@
-export const selectAccountUserQuery = `
+export const selectAccountUserByIdQuery = `
+  SELECT
+    users.id,
+    users.username,
+    users.firstName,
+    users.lastName,
+    accou.avatar,
+    accou.birthday,
+    accou.phoneNumber,
+    accou.address
+  FROM account accou
+    INNER JOIN users
+      ON accou.user_id = users.id
+  WHERE
+    users.id = $1
+`
+
+export const selectAccountUserByUserId = `
   SELECT
     users.id,
     users.username,
@@ -24,7 +41,7 @@ export const updateAccountUserQuery = `
     phoneNumber = $4,
     address = $5
   WHERE
-    userId = $1
+    id = $1
 `
 export const createAccountQuery = `
   INSERT INTO

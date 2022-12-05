@@ -7,9 +7,9 @@ export class AccountController {
 
   public getDetailUserAccount = async (req: Request, res: Response) => {
     try {
-      const { userId } = req.params
+      const { accountId } = req.params
       const { status, account } = await this.accountUseCase.getDetailAccount(
-        userId
+        accountId
       )
       res.status(status).json({ status, account })
     } catch (error) {
@@ -20,9 +20,11 @@ export class AccountController {
 
   public updateAccount = async (req: Request, res: Response) => {
     try {
-      const { userId } = req.params
-      const { status, account } =
-        await this.accountUseCase.updateAccountAndNotify(userId, req.body)
+      const { accountId } = req.params
+      const { status, account } = await this.accountUseCase.updateAccount(
+        accountId,
+        req.body
+      )
       res.status(status).json({ status, account })
     } catch (error) {
       const err = error as { status: number; error: string }

@@ -4,35 +4,41 @@ import { AccountEntity, AccountUserEntity } from '../../domain/AccountEntity'
 import { AccountRepository } from '../../domain/AccountRepository'
 
 import {
-  selectAccountUserQuery,
+  selectAccountUserByUserId,
+  selectAccountUserByIdQuery,
   updateAccountUserQuery,
   createAccountQuery,
 } from './SQLQuery'
 
 export class PostgreSQLAccountRepository implements AccountRepository {
+  findAccountById = async (id: string): Promise<AccountUserEntity | null> => {
+    const { rows: user } = await pool.query(selectAccountUserByIdQuery, [id])
+    return user[0]
+  }
+
   findAccountByUserId = async (
     userId: string
   ): Promise<AccountUserEntity | null> => {
-    const { rows: user } = await pool.query(selectAccountUserQuery, [userId])
+    const { rows: user } = await pool.query(selectAccountUserByUserId, [userId])
     return user[0]
   }
 
   updateAccount = async (
-    userId: string,
+    id: string,
     accountData: Omit<
       AccountEntity,
       'id' | 'userId' | 'createdAt' | 'updatedAt'
     >
   ): Promise<AccountUserEntity | null> => {
     await pool.query(updateAccountUserQuery, [
-      userId,
+      id,
       accountData.avatar,
       accountData.birthday,
       accountData.phoneNumber,
       accountData.address,
     ])
 
-    const account = await this.findAccountByUserId(userId)
+    const account = await this.findAccountById(id)
     return account
   }
 

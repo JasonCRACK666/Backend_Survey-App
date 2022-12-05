@@ -1,4 +1,5 @@
 import { api, TEST_USER, TEST_USER_CREATE } from '../helpers'
+import server from '../../src/index'
 
 import { PostgreSQLUserRepository } from '../../src/user/infrastructure/repository/PostgreSQLUserRepository'
 
@@ -133,4 +134,8 @@ describe('POST /api/auth/signUp', () => {
       )
     })
   })
+})
+
+afterAll(() => {
+  server.close()
 })
