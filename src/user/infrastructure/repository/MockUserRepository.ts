@@ -1,16 +1,30 @@
+import { v4 as uuid } from 'uuid'
+
 import { UserEntity } from '../../domain/UserEntity'
 import { UserRepository } from '../../domain/UserRepository'
 
 export const MOCK_USER: UserEntity = {
-  id: '3f4fa03e-493f-4fc1-9d4a-5b795bd43689',
+  id: uuid(),
   email: 'emerzonTest@gmail',
-  firstname: 'Emerzon Javier',
-  lastname: 'Kolki Martinez',
+  first_name: 'Emerzon Javier',
+  last_name: 'Kolki Martinez',
   password: '1234qwerasdf',
   username: 'JasonCrk',
 }
 
 export class MockUserRepository implements UserRepository {
+  public findAllUsers = async (): Promise<UserEntity[]> => {
+    const users: UserEntity[] = []
+    return users
+  }
+
+  public findUserByUsername = async (
+    _username: string
+  ): Promise<UserEntity | null> => {
+    const user = MOCK_USER
+    return user
+  }
+
   public findUserById = async (_id: string): Promise<UserEntity | null> => {
     const user = MOCK_USER
     return user

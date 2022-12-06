@@ -11,30 +11,32 @@ import {
 } from './SQLQuery'
 
 export class PostgreSQLAccountRepository implements AccountRepository {
-  findAccountById = async (id: string): Promise<AccountUserEntity | null> => {
+  public findAccountById = async (
+    id: string
+  ): Promise<AccountUserEntity | null> => {
     const { rows: user } = await pool.query(selectAccountUserByIdQuery, [id])
     return user[0]
   }
 
-  findAccountByUserId = async (
+  public findAccountByUserId = async (
     userId: string
   ): Promise<AccountUserEntity | null> => {
     const { rows: user } = await pool.query(selectAccountUserByUserId, [userId])
     return user[0]
   }
 
-  updateAccount = async (
+  public updateAccount = async (
     id: string,
     accountData: Omit<
       AccountEntity,
-      'id' | 'userId' | 'createdAt' | 'updatedAt'
+      'id' | 'user_id' | 'created_at' | 'updated_at'
     >
   ): Promise<AccountUserEntity | null> => {
     await pool.query(updateAccountUserQuery, [
       id,
       accountData.avatar,
       accountData.birthday,
-      accountData.phoneNumber,
+      accountData.phone_number,
       accountData.address,
     ])
 
@@ -42,21 +44,26 @@ export class PostgreSQLAccountRepository implements AccountRepository {
     return account
   }
 
-  createAccount = async (
+  public createAccount = async (
     accountData: AccountEntity
   ): Promise<AccountUserEntity | null> => {
     await pool.query(createAccountQuery, [
       accountData.id,
-      accountData.userId,
+      accountData.user_id,
       accountData.avatar,
       accountData.birthday,
-      accountData.phoneNumber,
+      accountData.phone_number,
       accountData.address,
-      accountData.createdAt,
-      accountData.updatedAt,
+      accountData.created_at,
+      accountData.updated_at,
     ])
 
-    const account = await this.findAccountByUserId(accountData.userId)
+    const account = await this.findAccountById(accountData.id)
     return account
+  }
+
+  public deleteAllAccounts = async (): Promise<void> => {
+    const query = `DELETE FROM account WHERE id = id`
+    await pool.query(query)
   }
 }

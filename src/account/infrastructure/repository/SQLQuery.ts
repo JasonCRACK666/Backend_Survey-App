@@ -1,29 +1,31 @@
 export const selectAccountUserByIdQuery = `
   SELECT
-    users.id,
+    accou.id,
     users.username,
-    users.firstName,
-    users.lastName,
+    users.first_name,
+    users.last_name,
     accou.avatar,
     accou.birthday,
-    accou.phoneNumber,
-    accou.address
+    accou.phone_number,
+    accou.address,
+    accou.created_at,
+    accou.updated_at
   FROM account accou
     INNER JOIN users
       ON accou.user_id = users.id
   WHERE
-    users.id = $1
+    accou.id = $1
 `
 
 export const selectAccountUserByUserId = `
   SELECT
     users.id,
     users.username,
-    users.firstName,
-    users.lastName,
+    users.first_name,
+    users.last_name,
     accou.avatar,
     accou.birthday,
-    accou.phoneNumber,
+    accou.phone_number,
     accou.address
   FROM account accou
     INNER JOIN users
@@ -38,7 +40,7 @@ export const updateAccountUserQuery = `
   SET
     avatar = $2,
     birthday = $3,
-    phoneNumber = $4,
+    phone_number = $4,
     address = $5
   WHERE
     id = $1
@@ -47,13 +49,13 @@ export const createAccountQuery = `
   INSERT INTO
     account (
       id,
-      userId,
+      user_id,
       avatar,
       birthday,
-      phoneNumber,
+      phone_number,
       address,
-      createdAt,
-      updatedAt
+      created_at,
+      updated_at
     ) VALUES (
       $1,
       $2,
@@ -61,6 +63,7 @@ export const createAccountQuery = `
       $4,
       $5,
       $6,
-      $7
+      $7,
+      $8
     )
 `

@@ -5,6 +5,7 @@
     "Encrypter",
     "firstname",
     "lastname",
+    "phonenumber",
     "postgre",
     "Postgre",
     "postgresql",

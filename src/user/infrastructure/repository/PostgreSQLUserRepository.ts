@@ -37,13 +37,13 @@ export class PostgreSQLUserRepository implements UserRepository {
   public registerUser = async (
     newUser: UserEntity
   ): Promise<UserEntity | null> => {
-    const query = `INSERT INTO users (id, username, firstName, lastName, email, password) VALUES ($1, $2, $3, $4, $5, $6)`
+    const query = `INSERT INTO users (id, username, first_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5, $6)`
     const password = await PasswordEncrypter.hashPassword(newUser.password)
     await pool.query(query, [
       newUser.id,
       newUser.username,
-      newUser.firstname,
-      newUser.lastname,
+      newUser.first_name,
+      newUser.last_name,
       newUser.email,
       password,
     ])
@@ -57,7 +57,7 @@ export class PostgreSQLUserRepository implements UserRepository {
   }
 
   public deleteAllUsers = async (): Promise<void> => {
-    const query = `DELETE FROM users`
+    const query = `DELETE FROM users WHERE id = id`
     await pool.query(query)
   }
 

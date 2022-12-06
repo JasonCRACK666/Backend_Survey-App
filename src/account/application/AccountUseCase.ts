@@ -22,7 +22,7 @@ export class AccountUseCase {
     }
   }
 
-  public createAccount = async (
+  public createAccountByUserId = async (
     userId: string
   ): Promise<{ status: number; account: AccountUserEntity }> => {
     const accountValue = new AccountValue(userId)
@@ -46,7 +46,7 @@ export class AccountUseCase {
       address,
       avatar,
       birthday,
-      phoneNumber,
+      phone_number,
     }: Omit<AccountEntity, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
   ): Promise<{
     status: number
@@ -56,7 +56,7 @@ export class AccountUseCase {
       address,
       avatar,
       birthday,
-      phoneNumber,
+      phone_number,
     })
 
     if (!account)

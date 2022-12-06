@@ -1,9 +1,12 @@
 import { api, TEST_USER_CREATE } from '../helpers'
-import server from '../../src/index'
 
 import { PostgreSQLUserRepository } from '../../src/user/infrastructure/repository/PostgreSQLUserRepository'
 
 const userRepository = new PostgreSQLUserRepository()
+
+beforeAll(async () => {
+  await userRepository.deleteAllUsers()
+})
 
 beforeEach(async () => {
   await userRepository.deleteAllUsers()
@@ -106,8 +109,4 @@ describe('POST /api/auth/signIn', () => {
       )
     })
   })
-})
-
-afterAll(() => {
-  server.close()
 })

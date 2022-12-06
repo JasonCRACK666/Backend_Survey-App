@@ -5,7 +5,7 @@ export interface AccountRepository {
     accountId: string,
     accountData: Omit<
       AccountEntity,
-      'id' | 'userId' | 'createdAt' | 'updatedAt'
+      'id' | 'user_id' | 'created_at' | 'updated_at'
     >
   ) => Promise<AccountUserEntity | null>
   createAccount: (
@@ -13,4 +13,5 @@ export interface AccountRepository {
   ) => Promise<AccountUserEntity | null>
   findAccountByUserId: (userId: string) => Promise<AccountUserEntity | null>
   findAccountById: (accountId: string) => Promise<AccountUserEntity | null>
+  deleteAllAccounts: () => Promise<void>
 }

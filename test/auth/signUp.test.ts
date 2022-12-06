@@ -1,5 +1,10 @@
-import { api, TEST_USER, TEST_USER_CREATE } from '../helpers'
-import server from '../../src/index'
+import {
+  api,
+  TEST_USER,
+  TEST_USER_CREATE,
+  TEST_USER_EMAIL_IS_TAKEN,
+  TEST_USER_USERNAME_IS_TAKEN,
+} from '../helpers'
 
 import { PostgreSQLUserRepository } from '../../src/user/infrastructure/repository/PostgreSQLUserRepository'
 
@@ -50,39 +55,25 @@ describe('POST /api/auth/signUp', () => {
       await userRepository.registerUser(TEST_USER_CREATE)
       await api
         .post('/api/auth/signUp')
-        .send({
-          username: TEST_USER_CREATE.username,
-          firstname: TEST_USER.firstname,
-          lastname: TEST_USER.lastname,
-          email: TEST_USER.email,
-          password: TEST_USER.password,
-        })
+        .send(TEST_USER_USERNAME_IS_TAKEN)
         .expect(406)
         .expect('Content-Type', /application\/json/)
     })
 
     test('should return a JSON with a status code 406', async () => {
       await userRepository.registerUser(TEST_USER_CREATE)
-      const responseSignUp = await api.post('/api/auth/signUp').send({
-        username: TEST_USER_CREATE.username,
-        firstname: TEST_USER.firstname,
-        lastname: TEST_USER.lastname,
-        email: TEST_USER.email,
-        password: TEST_USER.password,
-      })
+      const responseSignUp = await api
+        .post('/api/auth/signUp')
+        .send(TEST_USER_USERNAME_IS_TAKEN)
 
       expect(responseSignUp.body.status).toBe(406)
     })
 
     test('should return a JSON with a error message', async () => {
       await userRepository.registerUser(TEST_USER_CREATE)
-      const responseSignUp = await api.post('/api/auth/signUp').send({
-        username: TEST_USER_CREATE.username,
-        firstname: TEST_USER.firstname,
-        lastname: TEST_USER.lastname,
-        email: TEST_USER.email,
-        password: TEST_USER.password,
-      })
+      const responseSignUp = await api
+        .post('/api/auth/signUp')
+        .send(TEST_USER_USERNAME_IS_TAKEN)
 
       expect(responseSignUp.body.error).toBe(
         'El nombre de usuario ya esta en uso, utilice otro'
@@ -95,47 +86,29 @@ describe('POST /api/auth/signUp', () => {
       await userRepository.registerUser(TEST_USER_CREATE)
       await api
         .post('/api/auth/signUp')
-        .send({
-          username: TEST_USER.username,
-          firstname: TEST_USER.firstname,
-          lastname: TEST_USER.lastname,
-          email: TEST_USER_CREATE.email,
-          password: TEST_USER.password,
-        })
+        .send(TEST_USER_EMAIL_IS_TAKEN)
         .expect(406)
         .expect('Content-Type', /application\/json/)
     })
 
     test('should return a JSON with a status code 406', async () => {
       await userRepository.registerUser(TEST_USER_CREATE)
-      const responseSignUp = await api.post('/api/auth/signUp').send({
-        username: TEST_USER.username,
-        firstname: TEST_USER.firstname,
-        lastname: TEST_USER.lastname,
-        email: TEST_USER_CREATE.email,
-        password: TEST_USER.password,
-      })
+      const responseSignUp = await api
+        .post('/api/auth/signUp')
+        .send(TEST_USER_EMAIL_IS_TAKEN)
 
       expect(responseSignUp.body.status).toBe(406)
     })
 
     test('should return a JSON with a error message', async () => {
       await userRepository.registerUser(TEST_USER_CREATE)
-      const responseSignUp = await api.post('/api/auth/signUp').send({
-        username: TEST_USER.username,
-        firstname: TEST_USER.firstname,
-        lastname: TEST_USER.lastname,
-        email: TEST_USER_CREATE.email,
-        password: TEST_USER.password,
-      })
+      const responseSignUp = await api
+        .post('/api/auth/signUp')
+        .send(TEST_USER_EMAIL_IS_TAKEN)
 
       expect(responseSignUp.body.error).toBe(
         'El correo electrónico ya esta en uso, utilice otro'
       )
     })
   })
-})
-
-afterAll(() => {
-  server.close()
 })

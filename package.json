@@ -7,8 +7,7 @@
     "start": "cross-env NODE_ENV=production node build/src/index.js",
     "dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
     "build": "tsc",
-    "test": "cross-env NODE_ENV=test jest --verbose --silent",
-    "test:watch": "pnpm test -- --watchAll",
+    "test": "cross-env NODE_ENV=test jest --verbose --silent --watchAll",
     "lint": "eslint --ignore-path .gitignore . --ext .ts",
     "lint:fix": "pnpm lint -- --fix"
   },

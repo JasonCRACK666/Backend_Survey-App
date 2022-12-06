@@ -4,8 +4,8 @@ import { v4 as uuid } from 'uuid'
 
 interface UserValueProps {
   username: string
-  firstname: string
-  lastname: string
+  first_name: string
+  last_name: string
   email: string
   password: string
 }
@@ -13,22 +13,22 @@ interface UserValueProps {
 export class UserValue implements UserEntity {
   id: string
   username: string
-  firstname: string
-  lastname: string
+  first_name: string
+  last_name: string
   email: string
   password: string
 
   constructor({
     username,
-    firstname,
-    lastname,
+    first_name,
+    last_name,
     email,
     password,
   }: UserValueProps) {
     this.id = uuid()
     this.username = username
-    this.firstname = firstname
-    this.lastname = lastname
+    this.first_name = first_name
+    this.last_name = last_name
     this.email = email
     this.password = password
   }
