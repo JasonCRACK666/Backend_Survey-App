@@ -2,7 +2,14 @@ import pool from '../../../db';
 
 import { QuestionEntity, QuestionTypeEntity } from '../../domain/QuestionEntity';
 import { QuestionRepository } from '../../domain/QuestionRepository';
-import { createQuestionQuery, deleteQuestionQuery, findQuestionByIdQuery, findQuestionTypeByIdQuery } from './SQLQuery';
+
+import {
+  createQuestionQuery,
+  deleteAllQuestionsQuery,
+  deleteQuestionQuery,
+  findQuestionByIdQuery,
+  findQuestionTypeByIdQuery
+} from './SQLQuery';
 
 export class PostgreSQLQuestionRepository implements QuestionRepository {
   public findQuestionById = async (questionId: string): Promise<QuestionEntity | null> => {
@@ -28,5 +35,9 @@ export class PostgreSQLQuestionRepository implements QuestionRepository {
 
   public deleteQuestion = async (questionId: string): Promise<void> => {
     await pool.query(deleteQuestionQuery, [questionId])
+  }
+
+  public deleteAllQuestions = async (): Promise<void> => {
+    await pool.query(deleteAllQuestionsQuery)
   }
 }

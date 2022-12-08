@@ -17,7 +17,14 @@ export const createQuestionOptionQuery = `
 
 export const deleteQuestionOptionQuery = `
   DELETE FROM
-    question_option
+    question
   WHERE
     id = $1
+`
+
+export const deleteAllQuestionOptionsQuery = `
+  DELETE FROM
+    question_option
+  WHERE
+    id = id
 `

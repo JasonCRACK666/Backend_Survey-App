@@ -1,5 +1,4 @@
 export const selectSurveyByIdQuery = `
-
   SELECT
     surv.id,
     surv.title,
@@ -43,4 +42,11 @@ export const updateSurveyQuery = `
     description = $3
   WHERE
     id = $1
+`
+
+export const deleteAllSurveysQuery = `
+  DELETE FROM
+    survey
+  WHERE
+    id = id
 `

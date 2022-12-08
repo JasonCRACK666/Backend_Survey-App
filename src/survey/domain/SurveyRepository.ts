@@ -9,4 +9,5 @@ export interface SurveyRepository {
       Omit<SurveyEntity, 'id' | 'user_id' | 'created_at' | 'updated_at'>
     >
   ) => Promise<SurveyUserEntity | null>
+  deleteAllSurveys: () => Promise<void>
 }

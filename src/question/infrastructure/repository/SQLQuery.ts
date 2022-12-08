@@ -2,6 +2,10 @@ export const findQuestionByIdQuery = `
   SELECT * FROM question WHERE id = $1
 `
 
+export const findQuestionTypeByIdQuery = `
+  SELECT * FROM question_type WHERE id = $1
+`
+
 export const createQuestionQuery = `
   INSERT INTO
     question (
@@ -18,11 +22,15 @@ export const createQuestionQuery = `
 `
 
 export const deleteQuestionQuery = `
-  DELETE FROM question
+  DELETE FROM
+    question
   WHERE
     id = $1
 `
 
-export const findQuestionTypeByIdQuery = `
-  SELECT * FROM question_type WHERE id = $1
+export const deleteAllQuestionsQuery = `
+  DELETE FROM
+    question
+  WHERE
+    id = id
 `

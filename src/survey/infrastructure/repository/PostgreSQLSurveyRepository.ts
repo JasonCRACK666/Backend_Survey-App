@@ -3,7 +3,7 @@ import pool from '../../../db';
 import { SurveyUserEntity, SurveyEntity } from '../../domain/SurveyEntity';
 import { SurveyRepository } from '../../domain/SurveyRepository'
 
-import { createSurveyQuery, selectSurveyByIdQuery, updateSurveyQuery } from './SQLQuery';
+import { createSurveyQuery, deleteAllSurveysQuery, selectSurveyByIdQuery, updateSurveyQuery } from './SQLQuery';
 
 export class PostgreSQLSurveyRepository implements SurveyRepository {
   public findSurveyById = async (surveyId: string): Promise<SurveyUserEntity | null> => {
@@ -31,5 +31,9 @@ export class PostgreSQLSurveyRepository implements SurveyRepository {
     await pool.query(updateSurveyQuery, [surveyId, surveyData.title, surveyData.description])
     const surveyUpdated = await this.findSurveyById(surveyId)
     return surveyUpdated
+  }
+
+  public deleteAllSurveys = async (): Promise<void> => {
+    await pool.query(deleteAllSurveysQuery)
   }
 }

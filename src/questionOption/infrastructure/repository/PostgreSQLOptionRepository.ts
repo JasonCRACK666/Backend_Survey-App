@@ -2,9 +2,15 @@ import pool from '../../../db';
 
 import { QuestionOptionEntity } from '../../domain/QuestionOptionEntity';
 import { QuestionOptionRepository } from '../../domain/QuestionOptionRepository';
-import { createQuestionOptionQuery, deleteQuestionOptionQuery, findQuestionOptionByIdQuery } from './SQLQuery';
+import {
+  createQuestionOptionQuery,
+  findQuestionOptionByIdQuery,
+  deleteAllQuestionOptionsQuery,
+  deleteQuestionOptionQuery
+} from './SQLQuery';
 
 export class PostgreSQLOptionRepository implements QuestionOptionRepository {
+
   public findQuestionOptionById = async (questionOptionId: string): Promise<QuestionOptionEntity | null> => {
     const { rows: questionOption } = await pool.query(findQuestionOptionByIdQuery, [questionOptionId])
     return questionOption[0]
@@ -22,5 +28,9 @@ export class PostgreSQLOptionRepository implements QuestionOptionRepository {
 
   public deleteQuestionOption = async (questionOptionId: string): Promise<void> => {
     await pool.query(deleteQuestionOptionQuery, [questionOptionId])
+  }
+
+  public deleteAllQuestionOptions = async (): Promise<void> => {
+    await pool.query(deleteAllQuestionOptionsQuery)
   }
 }
