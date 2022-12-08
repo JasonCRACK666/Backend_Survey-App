@@ -3,9 +3,8 @@ import { AccountEntity, AccountUserEntity } from './AccountEntity'
 export interface AccountRepository {
   updateAccount: (
     accountId: string,
-    accountData: Omit<
-      AccountEntity,
-      'id' | 'user_id' | 'created_at' | 'updated_at'
+    accountData: Partial<
+      Omit<AccountEntity, 'id' | 'user_id' | 'created_at' | 'updated_at'>
     >
   ) => Promise<AccountUserEntity | null>
   createAccount: (
