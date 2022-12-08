@@ -41,42 +41,34 @@ CREATE TABLE survey (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE question_type (
+  id UUID NOT NULL PRIMARY KEY,
+  name VARCHAR(60) NOT NULL
+)
+
 CREATE TABLE question (
   id UUID NOT NULL PRIMARY KEY,
   survey_id UUID NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  FOREIGN KEY (survey_id) REFERENCES survey(id) ON DELETE CASCADE
-);
-
-CREATE TABLE question_multi (
-  id UUID NOT NULL PRIMARY KEY,
-  question_id UUID NOT NULL,
+  question_type_id UUID NOT NULL,
   question VARCHAR(200) NOT NULL,
-  FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
-);
-
-CREATE TABLE question_text (
-  id UUID NOT NULL PRIMARY KEY,
-  question_id UUID NOT NULL,
-  question VARCHAR(200) NOT NULL CHECK(LENGTH(question) >= 10),
-  FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
+  FOREIGN KEY (survey_id) REFERENCES survey(id) ON DELETE CASCADE,
+  FOREIGN KEY (question_type_id) REFERENCES question_type(id) ON DELETE CASCADE
 );
 
 CREATE TABLE question_option (
   id UUID NOT NULL PRIMARY KEY,
-  question_multi_id UUID NOT NULL,
+  question_id UUID NOT NULL,
   option VARCHAR(200) NOT NULL,
-  FOREIGN KEY (question_multi_id) REFERENCES question_multi(id) ON DELETE CASCADE
+  FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
 CREATE TABLE answer_text (
   id UUID NOT NULL PRIMARY KEY,
-  question_text_id UUID NOT NULL,
+  question_id UUID NOT NULL,
   user_id UUID NOT NULL,
   response TEXT NOT NULL CHECK(LENGTH(response) >= 10),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (question_text_id) REFERENCES question_text(id) ON DELETE CASCADE
+  FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
 CREATE TABLE answer_multi (
