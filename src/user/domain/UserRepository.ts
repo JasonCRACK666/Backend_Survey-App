@@ -7,6 +7,9 @@ export interface UserRepository {
   registerUser: (newUser: UserEntity) => Promise<UserEntity | null>
   deleteUser: (id: string) => Promise<void>
   deleteAllUsers: () => Promise<void>
-  updateUser: (id: string) => Promise<void>
+  updateUser: (
+    id: string,
+    userData: Omit<UserEntity, 'id' | 'is_admin'>
+  ) => Promise<void>
   findUserByUsername: (username: string) => Promise<UserEntity | null>
 }

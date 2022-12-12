@@ -8,6 +8,7 @@ interface UserValueProps {
   last_name: string
   email: string
   password: string
+  is_admin?: boolean
 }
 
 export class UserValue implements UserEntity {
@@ -17,6 +18,7 @@ export class UserValue implements UserEntity {
   last_name: string
   email: string
   password: string
+  is_admin: boolean
 
   constructor({
     username,
@@ -24,6 +26,7 @@ export class UserValue implements UserEntity {
     last_name,
     email,
     password,
+    is_admin,
   }: UserValueProps) {
     this.id = uuid()
     this.username = username
@@ -31,5 +34,6 @@ export class UserValue implements UserEntity {
     this.last_name = last_name
     this.email = email
     this.password = password
+    this.is_admin = is_admin ?? false
   }
 }
