@@ -6,10 +6,12 @@
     "Encrypter",
     "firstname",
     "lastname",
+    "logueado",
     "phonenumber",
     "postgre",
     "Postgre",
     "postgresql",
-    "qwerasdf"
+    "qwerasdf",
+    "tsbuildinfo"
   ]
 }
