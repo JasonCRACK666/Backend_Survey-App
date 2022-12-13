@@ -1,14 +1,14 @@
 import { Router } from 'express'
 
 import { PostgreSQLUserRepository } from '../repository/PostgreSQLUserRepository'
-import { UserUseCase } from '../../application/UserUseCase'
+import { AuthUseCase } from '../../application/AuthUseCase'
 import { AuthController } from '../controllers/AuthController'
 
 const router = Router()
 
 const postgreSQLUserRepository = new PostgreSQLUserRepository()
-const userUseCase = new UserUseCase(postgreSQLUserRepository)
-const authController = new AuthController(userUseCase)
+const authUseCase = new AuthUseCase(postgreSQLUserRepository)
+const authController = new AuthController(authUseCase)
 
 router.post('/signUp', authController.postRegisterUser)
 router.post('/signIn', authController.postLoginUser)

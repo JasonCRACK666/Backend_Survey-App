@@ -61,5 +61,8 @@ export class PostgreSQLUserRepository implements UserRepository {
     await pool.query(query)
   }
 
-  public updateUser = async (id: string): Promise<void> => {}
+  public updateUser = async (
+    id: string,
+    userData: Omit<UserEntity, 'id' | 'is_admin'>
+  ): Promise<void> => {}
 }

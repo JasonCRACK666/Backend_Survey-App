@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
-import { UserUseCase } from '../../application/UserUseCase'
+
+import { AuthUseCase } from '../../application/AuthUseCase'
 
 export class AuthController {
-  constructor(private userUseCase: UserUseCase) {}
+  constructor(private userUseCase: AuthUseCase) {}
 
   public postRegisterUser = async (req: Request, res: Response) => {
     try {
