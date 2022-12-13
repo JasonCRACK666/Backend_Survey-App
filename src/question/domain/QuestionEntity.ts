@@ -1,5 +1,3 @@
-import { QuestionOptionEntity } from '../../questionOption/domain/QuestionOptionEntity'
-
 export interface QuestionEntity {
   id: string
   survey_id: string
@@ -12,6 +10,7 @@ export interface QuestionTypeEntity {
   name: string
 }
 
-export interface QuestionWithOptions extends Omit<QuestionEntity, 'id' | 'survey_id'> {
-  options?: Omit<QuestionOptionEntity, 'id'>[]
+export interface QuestionWithOptions
+  extends Omit<QuestionEntity, 'id' | 'survey_id'> {
+  options?: string[]
 }

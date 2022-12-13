@@ -1,9 +1,9 @@
 export const findQuestionByIdQuery = `
-  SELECT * FROM question WHERE id = $1
+  SELECT * FROM question WHERE id = $1;
 `
 
 export const findQuestionTypeByIdQuery = `
-  SELECT * FROM question_type WHERE id = $1
+  SELECT * FROM question_type WHERE id = $1;
 `
 
 export const createQuestionQuery = `
@@ -18,19 +18,30 @@ export const createQuestionQuery = `
       $2,
       $3,
       $4
-    )
+    );
+`
+
+export const createQuestionTypeQuery = `
+  INSERT INTO
+    question_type (
+      id,
+      name
+    ) VALUES (
+      $1,
+      $2
+    );
 `
 
 export const deleteQuestionQuery = `
   DELETE FROM
     question
   WHERE
-    id = $1
+    id = $1;
 `
 
 export const deleteAllQuestionsQuery = `
   DELETE FROM
     question
   WHERE
-    id = id
+    id = id;
 `
