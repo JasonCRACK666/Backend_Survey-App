@@ -1,5 +1,5 @@
 export const findQuestionOptionByIdQuery = `
-  SELECT * FROM question_option WHERE id = $1
+  SELECT * FROM question_option WHERE id = $1;
 `
 
 export const createQuestionOptionQuery = `
@@ -12,19 +12,19 @@ export const createQuestionOptionQuery = `
       $1,
       $2,
       $3
-    )
+    );
 `
 
 export const deleteQuestionOptionQuery = `
   DELETE FROM
     question
   WHERE
-    id = $1
+    id = $1;
 `
 
 export const deleteAllQuestionOptionsQuery = `
   DELETE FROM
     question_option
   WHERE
-    id = id
+    id = id;
 `

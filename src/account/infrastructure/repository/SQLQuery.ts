@@ -14,7 +14,7 @@ export const selectAccountUserByIdQuery = `
     INNER JOIN users
       ON accou.user_id = users.id
   WHERE
-    accou.id = $1
+    accou.id = $1;
 `
 
 export const selectAccountUserByUserId = `
@@ -31,7 +31,7 @@ export const selectAccountUserByUserId = `
     INNER JOIN users
       ON accou.user_id = users.id
   WHERE
-    users.id = $1
+    users.id = $1;
 `
 
 export const updateAccountUserQuery = `
@@ -43,7 +43,7 @@ export const updateAccountUserQuery = `
     phone_number = $4,
     address = $5
   WHERE
-    id = $1
+    id = $1;
 `
 export const createAccountQuery = `
   INSERT INTO
@@ -65,5 +65,5 @@ export const createAccountQuery = `
       $6,
       $7,
       $8
-    )
+    );
 `
