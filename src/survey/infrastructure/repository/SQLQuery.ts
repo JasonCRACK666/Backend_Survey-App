@@ -1,19 +1,17 @@
 export const selectSurveyByIdQuery = `
   SELECT
-    surv.id,
-    surv.title,
-    surv.description,
-    acco.avatar,
-    user.username,
-    surv.created_at,
-    surv.updated_at
-  FROM survey surv
-    INNER JOIN users user
-      ON surv.user_id = user.id
-    INNER JOIN account acco
-      ON acco.user_id = user.id
+    survey.id,
+    users.username,
+    survey.title,
+    survey.description,
+    survey.created_at,
+    survey.updated_at
+  FROM
+    survey
+  INNER JOIN users
+    ON survey.user_id = users.id
   WHERE
-    surv.id = $1
+    survey.id = $1;
 `
 
 export const createSurveyQuery = `
@@ -32,7 +30,7 @@ export const createSurveyQuery = `
       $4,
       $5,
       $6
-    )
+    );
 `
 
 export const updateSurveyQuery = `
@@ -41,12 +39,12 @@ export const updateSurveyQuery = `
     title = $2,
     description = $3
   WHERE
-    id = $1
+    id = $1;
 `
 
 export const deleteAllSurveysQuery = `
   DELETE FROM
     survey
   WHERE
-    id = id
+    id = id;
 `
