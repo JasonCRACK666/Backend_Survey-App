@@ -44,6 +44,9 @@ CREATE TABLE QUESTION_TYPE (
   name VARCHAR(60) NOT NULL
 );
 
+INSERT INTO QUESTION_TYPE (id, name) VALUES (uuid_generate_v4(), 'text');
+INSERT INTO QUESTION_TYPE (id, name) VALUES (uuid_generate_v4(), 'multi');
+
 CREATE TABLE QUESTION (
   id UUID NOT NULL PRIMARY KEY,
   survey_id UUID NOT NULL,
