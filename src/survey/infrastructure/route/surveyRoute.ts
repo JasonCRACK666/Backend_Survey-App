@@ -8,6 +8,8 @@ import { SurveyUseCase } from '../../application/SurveyUseCase'
 
 import { SurveyController } from '../controllers/SurveyController'
 
+import isAuthenticated from '../../../user/infrastructure/permissions/isAuthenticated'
+
 const router = Router()
 
 const postgreSQLSurveyRepository = new PostgreSQLSurveyRepository()
@@ -22,6 +24,6 @@ const surveyUseCase = new SurveyUseCase(
 
 const surveyController = new SurveyController(surveyUseCase)
 
-router.post('', surveyController.postCreateSurvey)
+router.post('', isAuthenticated, surveyController.postCreateSurvey)
 
 export default router
