@@ -1,7 +1,11 @@
-import { SurveyEntity, SurveyUserEntity } from './SurveyEntity'
+import { SurveyComplete, SurveyEntity, SurveyUserEntity } from './SurveyEntity'
 
 export interface SurveyRepository {
   findSurveyById: (surveyId: string) => Promise<SurveyUserEntity | null>
+  findCompleteSurvey: (
+    userId: string,
+    surveyId: string
+  ) => Promise<SurveyComplete | null>
   createSurvey: (surveyData: SurveyEntity) => Promise<SurveyUserEntity | null>
   updateSurvey: (
     surveyId: string,
@@ -10,4 +14,8 @@ export interface SurveyRepository {
     >
   ) => Promise<SurveyUserEntity | null>
   deleteAllSurveys: () => Promise<void>
+  createCompleteSurvey: (
+    userId: string,
+    surveyId: string
+  ) => Promise<SurveyComplete | null>
 }

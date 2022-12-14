@@ -10,3 +10,8 @@ export interface SurveyEntity {
 export interface SurveyUserEntity extends Omit<SurveyEntity, 'user_id'> {
   username: string
 }
+
+export interface SurveyComplete {
+  user_id: string
+  survey_id: string
+}

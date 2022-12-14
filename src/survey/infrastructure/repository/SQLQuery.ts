@@ -1,4 +1,4 @@
-export const selectSurveyByIdQuery = `
+export const findSurveyByIdQuery = `
   SELECT
     survey.id,
     users.username,
@@ -12,6 +12,16 @@ export const selectSurveyByIdQuery = `
     ON survey.user_id = users.id
   WHERE
     survey.id = $1;
+`
+
+export const findCompleteSurveyQuery = `
+  SELECT
+    user_id,
+    survey_id
+  FROM completed_surveys
+  WHERE
+    user_id = $1 AND
+    survey_id = $2;
 `
 
 export const createSurveyQuery = `
@@ -30,6 +40,17 @@ export const createSurveyQuery = `
       $4,
       $5,
       $6
+    );
+`
+
+export const createCompleteSurveyQuery = `
+  INSERT INTO
+    completed_surveys (
+      user_id,
+      survey_id
+    ) VALUES (
+      $1,
+      $2
     );
 `
 

@@ -3,7 +3,7 @@ import { SurveyValue } from '../domain/SurveyValue'
 
 import { QuestionRepository } from '../../question/domain/QuestionRepository'
 import {
-  QuestionEntity,
+  QuestionDetailEntity,
   QuestionWithOptions,
 } from '../../question/domain/QuestionEntity'
 import { QuestionValue } from '../../question/domain/QuestionValue'
@@ -46,11 +46,10 @@ export class SurveyUseCase {
       user_id: userId,
     })
 
-    let surveyCreated: SurveyUserEntity | null = null
+    let surveyCreated: SurveyUserEntity | null
     try {
       surveyCreated = await this.surveyRepository.createSurvey(surveyValue)
     } catch (error) {
-      console.log(error)
       throw {
         status: 500,
         error: 'No se ha podido crear la encuesta',
@@ -80,13 +79,12 @@ export class SurveyUseCase {
         question: question.question,
       })
 
-      let questionCreated: QuestionEntity | null = null
+      let questionCreated: QuestionDetailEntity | null
       try {
         questionCreated = await this.questionRepository.createQuestion(
           questionValue
         )
       } catch (error) {
-        console.log(error)
         throw {
           status: 500,
           error:
@@ -106,7 +104,6 @@ export class SurveyUseCase {
               optionValue
             )
           } catch (error) {
-            console.log(error)
             throw {
               status: 500,
               error:
