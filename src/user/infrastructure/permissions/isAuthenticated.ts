@@ -1,15 +1,16 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
+import { RequestAuth } from '../utils/RequestAuth'
 
 import jwt from 'jsonwebtoken'
 import config from '../../../config'
 
 import { UserEntity } from '../../domain/UserEntity'
-import PostgreSQLUserRepository from '../repository/PostgreSQLUserRepository'
+import { PostgreSQLUserRepository } from '../repository/PostgreSQLUserRepository'
 
 const postgreSQLUserRepository = new PostgreSQLUserRepository()
 
 const isAuthenticated = async (
-  req: Request,
+  req: RequestAuth,
   res: Response,
   next: NextFunction
 ) => {

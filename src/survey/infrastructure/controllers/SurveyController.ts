@@ -1,16 +1,17 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
+import { RequestAuth } from '../../../user/infrastructure/utils/RequestAuth'
 
 import { SurveyUseCase } from '../../application/SurveyUseCase'
 
 export class SurveyController {
   constructor(private surveyUseCase: SurveyUseCase) {}
 
-  public postCreateSurvey = async (req: Request, res: Response) => {
+  public postCreateSurvey = async (req: RequestAuth, res: Response) => {
     try {
-      const { userId, survey, questions } = req.body
+      const { survey, questions } = req.body
       const { status, message } =
         await this.surveyUseCase.createSurveyQuestionsAndOptions({
-          userId,
+          userId: req.user?.id!,
           survey,
           questions,
         })

@@ -1,6 +1,11 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
+import { RequestAuth } from '../utils/RequestAuth'
 
-const isAdminUser = async (req: Request, res: Response, next: NextFunction) => {
+const isAdminUser = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+) => {
   if (!req.user)
     res.status(401).json({
       status: 401,

@@ -1,11 +1,12 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
+import { RequestAuth } from '../../../user/infrastructure/utils/RequestAuth'
 
 import { QuestionTypeUseCase } from '../../application/QuestionTypeUseCase'
 
 export class QuestionTypeController {
   constructor(private questionTypeUseCase: QuestionTypeUseCase) {}
 
-  public postCreateQuestionType = async (req: Request, res: Response) => {
+  public postCreateQuestionType = async (req: RequestAuth, res: Response) => {
     try {
       const { name } = req.body
       const { status, questionType } =
