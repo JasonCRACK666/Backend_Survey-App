@@ -5,6 +5,11 @@ export interface QuestionEntity {
   question: string
 }
 
+export interface QuestionDetailEntity
+  extends Omit<QuestionEntity, 'question_type_id'> {
+  question_type: string
+}
+
 export interface QuestionTypeEntity {
   id: string
   name: string

@@ -1,6 +1,10 @@
 import pool from '../../../db'
 
-import { QuestionEntity, QuestionTypeEntity } from '../../domain/QuestionEntity'
+import {
+  QuestionDetailEntity,
+  QuestionEntity,
+  QuestionTypeEntity,
+} from '../../domain/QuestionEntity'
 import { QuestionRepository } from '../../domain/QuestionRepository'
 
 import {
@@ -15,7 +19,7 @@ import {
 export class PostgreSQLQuestionRepository implements QuestionRepository {
   public findQuestionById = async (
     questionId: string
-  ): Promise<QuestionEntity | null> => {
+  ): Promise<QuestionDetailEntity | null> => {
     const { rows: question } = await pool.query(findQuestionByIdQuery, [
       questionId,
     ])
@@ -33,7 +37,7 @@ export class PostgreSQLQuestionRepository implements QuestionRepository {
 
   public createQuestion = async (
     questionData: QuestionEntity
-  ): Promise<QuestionEntity | null> => {
+  ): Promise<QuestionDetailEntity | null> => {
     await pool.query(createQuestionQuery, [
       questionData.id,
       questionData.survey_id,

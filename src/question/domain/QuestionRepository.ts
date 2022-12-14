@@ -1,13 +1,17 @@
-import { QuestionEntity, QuestionTypeEntity } from './QuestionEntity'
+import {
+  QuestionDetailEntity,
+  QuestionEntity,
+  QuestionTypeEntity,
+} from './QuestionEntity'
 
 export interface QuestionRepository {
   findQuestionTypeById: (
     questionTypeId: string
   ) => Promise<QuestionTypeEntity | null>
-  findQuestionById: (questionId: string) => Promise<QuestionEntity | null>
+  findQuestionById: (questionId: string) => Promise<QuestionDetailEntity | null>
   createQuestion: (
     questionData: QuestionEntity
-  ) => Promise<QuestionEntity | null>
+  ) => Promise<QuestionDetailEntity | null>
   deleteQuestion: (questionId: string) => Promise<void>
   deleteAllQuestions: () => Promise<void>
   createQuestionType: (
