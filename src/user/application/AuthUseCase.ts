@@ -19,9 +19,18 @@ export class AuthUseCase {
   public registerUser = async (
     userData: Omit<UserEntity, 'id' | 'is_admin'>
   ) => {
-    const userFoundForUsername = await this.userRepository.findUserByUsername(
-      userData.username
-    )
+    let userFoundForUsername: UserEntity | null
+    try {
+      userFoundForUsername = await this.userRepository.findUserByUsername(
+        userData.username
+      )
+    } catch (error) {
+      throw {
+        status: 500,
+        error:
+          'Hubo un error, no se puedo hacer la búsqueda del usuario mediante el Nombre de usuario',
+      }
+    }
 
     if (userFoundForUsername)
       throw {
@@ -29,9 +38,18 @@ export class AuthUseCase {
         error: 'El nombre de usuario ya esta en uso, utilice otro',
       }
 
-    const userFoundForEmail = await this.userRepository.findUserByEmail(
-      userData.email
-    )
+    let userFoundForEmail: UserEntity | null
+    try {
+      userFoundForEmail = await this.userRepository.findUserByEmail(
+        userData.email
+      )
+    } catch (error) {
+      throw {
+        status: 500,
+        error:
+          'Hubo un error, no se puedo hacer la búsqueda del usuario mediante el Email',
+      }
+    }
 
     if (userFoundForEmail)
       throw {
@@ -40,7 +58,16 @@ export class AuthUseCase {
       }
 
     const userValue = new UserValue(userData)
-    const userRegistered = await this.userRepository.registerUser(userValue)
+
+    let userRegistered: UserEntity | null
+    try {
+      userRegistered = await this.userRepository.registerUser(userValue)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se ha podido crear el usuario',
+      }
+    }
 
     if (!userRegistered)
       throw {
