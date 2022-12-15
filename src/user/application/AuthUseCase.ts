@@ -6,9 +6,15 @@ import { PasswordEncrypter } from '../infrastructure/utils/passwordEncrypter'
 import { UserEntity } from '../domain/UserEntity'
 import { UserValue } from '../domain/UserValue'
 import { UserRepository } from '../domain/UserRepository'
+import { AccountValue } from '../../account/domain/AccountValue'
+import { AccountUserEntity } from '../../account/domain/AccountEntity'
+import { AccountRepository } from '../../account/domain/AccountRepository'
 
 export class AuthUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly accountRepository: AccountRepository
+  ) {}
 
   public registerUser = async (
     userData: Omit<UserEntity, 'id' | 'is_admin'>
@@ -40,6 +46,24 @@ export class AuthUseCase {
       throw {
         status: 404,
         error: 'El usuario no ha sido creado',
+      }
+
+    const accountValue = new AccountValue(userRegistered.id)
+
+    let accountUser: AccountUserEntity | null
+    try {
+      accountUser = await this.accountRepository.createAccount(accountValue)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se ha podido crear la cuenta',
+      }
+    }
+
+    if (!accountUser)
+      throw {
+        status: 404,
+        error: 'No se ha podido crear su cuenta',
       }
 
     return { status: 200, user: userRegistered }
