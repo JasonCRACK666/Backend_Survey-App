@@ -23,7 +23,7 @@ CREATE TABLE ACCOUNT (
   avatar VARCHAR(200),
   birthday DATE CHECK(birthday < CURRENT_DATE),
   phone_number VARCHAR(9) UNIQUE CHECK(LENGTH(phone_number) = 9),
-  address VARCHAR(80) NOT NULL,
+  address VARCHAR(80),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
