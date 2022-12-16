@@ -13,6 +13,7 @@ import {
   deleteAllQuestionsQuery,
   deleteQuestionQuery,
   findQuestionByIdQuery,
+  findQuestionsBySurveyIdQuery,
   findQuestionTypeByIdQuery,
 } from './SQLQuery'
 
@@ -24,6 +25,15 @@ export class PostgreSQLQuestionRepository implements QuestionRepository {
       questionId,
     ])
     return question[0]
+  }
+
+  public findQuestionsBySurveyId = async (
+    surveyId: string
+  ): Promise<QuestionDetailEntity[] | null> => {
+    const { rows: questions } = await pool.query(findQuestionsBySurveyIdQuery, [
+      surveyId,
+    ])
+    return questions
   }
 
   public findQuestionTypeById = async (

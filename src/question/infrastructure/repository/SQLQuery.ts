@@ -1,3 +1,14 @@
+export const findQuestionsBySurveyIdQuery = `
+  SELECT
+    question.id,
+    question_type.name as question_type,
+    question.question
+  FROM question
+    INNER JOIN question_type
+      ON question.question_type_id = question_type.id
+  WHERE question.survey_id = $1
+`
+
 export const findQuestionByIdQuery = `
   SELECT
     question.id,

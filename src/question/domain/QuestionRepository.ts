@@ -9,6 +9,9 @@ export interface QuestionRepository {
     questionTypeId: string
   ) => Promise<QuestionTypeEntity | null>
   findQuestionById: (questionId: string) => Promise<QuestionDetailEntity | null>
+  findQuestionsBySurveyId: (
+    surveyId: string
+  ) => Promise<QuestionDetailEntity[] | null>
   createQuestion: (
     questionData: QuestionEntity
   ) => Promise<QuestionDetailEntity | null>
