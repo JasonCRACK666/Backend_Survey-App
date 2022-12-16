@@ -24,6 +24,13 @@ const surveyUseCase = new SurveyUseCase(
 
 const surveyController = new SurveyController(surveyUseCase)
 
+router.get('', surveyController.getSurveys)
+router.get('/:surveyId', surveyController.getSurvey)
+router.get(
+  '/:surveyId/isComplete',
+  isAuthenticated,
+  surveyController.getIsCompleteSurvey
+)
 router.post('', isAuthenticated, surveyController.postCreateSurvey)
 
 export default router
