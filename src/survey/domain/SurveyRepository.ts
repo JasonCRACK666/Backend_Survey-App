@@ -2,7 +2,7 @@ import { SurveyComplete, SurveyEntity, SurveyUserEntity } from './SurveyEntity'
 
 export interface SurveyRepository {
   findSurveyById: (surveyId: string) => Promise<SurveyUserEntity | null>
-  findAllSurveys: () => Promise<SurveyUserEntity[]>
+  findAllSurveys: (userId: string) => Promise<SurveyUserEntity[]>
   findCompleteSurvey: (
     userId: string,
     surveyId: string
