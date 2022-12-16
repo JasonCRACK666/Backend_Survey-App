@@ -11,7 +11,9 @@ export const findAllSurveysQuery = `
   INNER JOIN users
     ON survey.user_id = users.id
   INNER JOIN account
-    ON users.id = account.user_id;
+    ON users.id = account.user_id
+  WHERE
+    users.id = $1
 `
 
 export const findSurveyByIdQuery = `

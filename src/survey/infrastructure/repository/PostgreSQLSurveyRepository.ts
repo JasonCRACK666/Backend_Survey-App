@@ -19,8 +19,10 @@ import {
 } from './SQLQuery'
 
 export class PostgreSQLSurveyRepository implements SurveyRepository {
-  public findAllSurveys = async (): Promise<SurveyUserEntity[]> => {
-    const { rows: surveys } = await pool.query(findAllSurveysQuery)
+  public findAllSurveys = async (
+    userId: string
+  ): Promise<SurveyUserEntity[]> => {
+    const { rows: surveys } = await pool.query(findAllSurveysQuery, [userId])
     return surveys
   }
 
