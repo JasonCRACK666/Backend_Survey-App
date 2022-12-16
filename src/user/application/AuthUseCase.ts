@@ -121,7 +121,7 @@ export class AuthUseCase {
       }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username },
+      { id: user.id, username: user.username, is_admin: user.is_admin },
       config.SECRET!,
       {
         expiresIn: '12h',
