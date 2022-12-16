@@ -26,7 +26,7 @@ export class AuthController {
     }
   }
 
-  public getUserMe = async (req: RequestAuth, res: Response) => {
+  public getMyUser = async (req: RequestAuth, res: Response) => {
     try {
       const { status, user } = await this.userUseCase.getUserWithTheAccessToken(
         req.user?.id!
