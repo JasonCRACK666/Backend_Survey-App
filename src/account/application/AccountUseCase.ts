@@ -6,14 +6,22 @@ export class AccountUseCase {
   constructor(private readonly accountRepository: AccountRepository) {}
 
   public getDetailAccount = async (
-    id: string
+    accountId: string
   ): Promise<{ status: number; account: AccountUserEntity }> => {
-    const accountUser = await this.accountRepository.findAccountById(id)
+    let accountUser: AccountUserEntity | null
+    try {
+      accountUser = await this.accountRepository.findAccountById(accountId)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo hacer la búsqueda de la cuenta',
+      }
+    }
 
     if (!accountUser)
       throw {
         status: 404,
-        error: 'No se ha encontrado ninguna cuenta',
+        error: 'El usuario no existe',
       }
 
     return {
