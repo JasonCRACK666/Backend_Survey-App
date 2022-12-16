@@ -8,6 +8,7 @@ export interface SurveyEntity {
 }
 
 export interface SurveyUserEntity extends Omit<SurveyEntity, 'user_id'> {
+  avatar: string
   username: string
 }
 
