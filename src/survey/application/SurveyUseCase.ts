@@ -1,16 +1,18 @@
+import { SurveyComplete, SurveyUserEntity } from '../domain/SurveyEntity'
 import { SurveyRepository } from '../domain/SurveyRepository'
 import { SurveyValue } from '../domain/SurveyValue'
 
 import { QuestionRepository } from '../../question/domain/QuestionRepository'
 import {
   QuestionDetailEntity,
+  QuestionDetailWithOptions,
   QuestionWithOptions,
 } from '../../question/domain/QuestionEntity'
 import { QuestionValue } from '../../question/domain/QuestionValue'
 
 import { QuestionOptionRepository } from '../../questionOption/domain/QuestionOptionRepository'
 import { QuestionOptionValue } from '../../questionOption/domain/QuestionOptionValue'
-import { SurveyUserEntity } from '../domain/SurveyEntity'
+import { QuestionOptionEntity } from '../../questionOption/domain/QuestionOptionEntity'
 
 export class SurveyUseCase {
   constructor(
@@ -19,15 +21,154 @@ export class SurveyUseCase {
     private readonly questionOptionRepository: QuestionOptionRepository
   ) {}
 
-  public createSurveyQuestionsAndOptions = async ({
-    userId,
-    survey,
-    questions,
-  }: {
-    userId: string
-    survey: { title: string; description: string }
+  public getAllSurveys = async (): Promise<{
+    status: number
+    surveys: SurveyUserEntity[]
+  }> => {
+    let allSurveys: SurveyUserEntity[]
+    try {
+      allSurveys = await this.surveyRepository.findAllSurveys()
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo obtener las encuestas',
+      }
+    }
+
+    return {
+      status: 200,
+      surveys: allSurveys,
+    }
+  }
+
+  public getSurveyQuestionsAndOptions = async (
+    surveyId: string
+  ): Promise<{
+    status: number
+    survey: SurveyUserEntity
+    questions: QuestionDetailWithOptions[]
+  }> => {
+    let survey: SurveyUserEntity | null
+    try {
+      survey = await this.surveyRepository.findSurveyById(surveyId)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo hacer la búsqueda de la encuesta',
+      }
+    }
+
+    if (!survey)
+      throw {
+        status: 404,
+        error: 'No se ha encontrado la encuesta',
+      }
+
+    let questions: QuestionDetailEntity[] | null
+
+    try {
+      questions = await this.questionRepository.findQuestionsBySurveyId(
+        survey.id
+      )
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo obtener las preguntas',
+      }
+    }
+
+    if (!questions || questions.length === 0)
+      throw {
+        status: 404,
+        error: 'No se ha encontrado ninguna pregunta',
+      }
+
+    let finalQuestions: QuestionDetailWithOptions[] = []
+    for (const question of questions) {
+      if (question.question_type === 'text') {
+        finalQuestions.push(question)
+        continue
+      }
+
+      let questionOptions: Omit<QuestionOptionEntity, 'question_id'>[] | null
+      try {
+        questionOptions =
+          await this.questionOptionRepository.findQuestionOptionsByQuestionId(
+            question.id
+          )
+      } catch (error) {
+        throw {
+          status: 500,
+          error:
+            'Hubo un error, no se ha podido obtener las opciones de una pregunta',
+        }
+      }
+
+      if (!questionOptions || questionOptions.length === 0)
+        throw {
+          status: 403,
+          error: 'No se ha encontrado ninguna opción para la pregunta',
+        }
+
+      finalQuestions.push({
+        id: question.id,
+        question_type: question.question_type,
+        question: question.question,
+        options: questionOptions,
+      })
+    }
+
+    return {
+      status: 200,
+      survey,
+      questions: finalQuestions,
+    }
+  }
+
+  public whetherUserHasAlreadyCompletedSurvey = async (
+    userId: string,
+    surveyId: string
+  ): Promise<{ status: number; isCompleted: boolean }> => {
+    let survey: SurveyUserEntity | null
+    try {
+      survey = await this.surveyRepository.findSurveyById(surveyId)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se pudo hacer la búsqueda de la encuesta',
+      }
+    }
+
+    if (!survey)
+      throw {
+        status: 404,
+        error: 'La encuesta no existe',
+      }
+
+    let surveyCompleted: SurveyComplete | null
+    try {
+      surveyCompleted = await this.surveyRepository.findCompleteSurvey(
+        userId,
+        survey.id
+      )
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se pudo hacer la búsqueda de la encuesta',
+      }
+    }
+
+    return {
+      status: 200,
+      isCompleted: surveyCompleted !== null,
+    }
+  }
+
+  public createSurveyQuestionsAndOptions = async (
+    userId: string,
+    survey: { title: string; description: string },
     questions: QuestionWithOptions[]
-  }): Promise<{ status: number; message: string }> => {
+  ): Promise<{ status: number; message: string }> => {
     if (questions.length < 1)
       throw {
         status: 403,
