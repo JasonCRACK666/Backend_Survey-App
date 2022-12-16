@@ -133,4 +133,29 @@ export class AuthUseCase {
       token,
     }
   }
+
+  public getUserWithTheAccessToken = async (
+    userId: string
+  ): Promise<{ status: number; user: Omit<UserEntity, 'password'> }> => {
+    let user: UserEntity | null
+    try {
+      user = await this.userRepository.findUserById(userId)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo hacer la búsqueda del usuario',
+      }
+    }
+
+    if (!user)
+      throw {
+        status: 404,
+        error: 'El usuario no existe',
+      }
+
+    return {
+      status: 200,
+      user,
+    }
+  }
 }
