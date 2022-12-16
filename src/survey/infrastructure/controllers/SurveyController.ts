@@ -6,9 +6,11 @@ import { SurveyUseCase } from '../../application/SurveyUseCase'
 export class SurveyController {
   constructor(private surveyUseCase: SurveyUseCase) {}
 
-  public getSurveys = async (req: Request, res: Response) => {
+  public getSurveys = async (req: RequestAuth, res: Response) => {
     try {
-      const { status, surveys } = await this.surveyUseCase.getAllSurveys()
+      const { status, surveys } = await this.surveyUseCase.getAllSurveys(
+        req.user?.id!
+      )
       res.status(status).json({ status, surveys })
     } catch (error) {
       const err = error as { status: number; error: string }
