@@ -6,8 +6,19 @@ export class UserUseCase {
 
   public getDetailUser = async (
     id: string
-  ): Promise<{ status: number; user: Omit<UserEntity, 'is_admin'> }> => {
-    const user = await this.userRepository.findUserById(id)
+  ): Promise<{
+    status: number
+    user: Omit<UserEntity, 'is_admin' | 'password'>
+  }> => {
+    let user: UserEntity | null
+    try {
+      user = await this.userRepository.findUserById(id)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo realizar la búsqueda del usuario',
+      }
+    }
 
     if (!user)
       throw {
@@ -23,7 +34,6 @@ export class UserUseCase {
         username: user.username,
         first_name: user.first_name,
         last_name: user.last_name,
-        password: user.password,
       },
     }
   }
