@@ -21,13 +21,15 @@ export class SurveyUseCase {
     private readonly questionOptionRepository: QuestionOptionRepository
   ) {}
 
-  public getAllSurveys = async (): Promise<{
+  public getAllSurveys = async (
+    userId: string
+  ): Promise<{
     status: number
     surveys: SurveyUserEntity[]
   }> => {
     let allSurveys: SurveyUserEntity[]
     try {
-      allSurveys = await this.surveyRepository.findAllSurveys()
+      allSurveys = await this.surveyRepository.findAllSurveys(userId)
     } catch (error) {
       throw {
         status: 500,
