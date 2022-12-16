@@ -24,7 +24,7 @@ const surveyUseCase = new SurveyUseCase(
 
 const surveyController = new SurveyController(surveyUseCase)
 
-router.get('', surveyController.getSurveys)
+router.get('', isAuthenticated, surveyController.getSurveys)
 router.get('/:surveyId', surveyController.getSurvey)
 router.get(
   '/:surveyId/isComplete',
