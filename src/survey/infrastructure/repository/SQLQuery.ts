@@ -1,15 +1,33 @@
-export const findSurveyByIdQuery = `
+export const findAllSurveysQuery = `
   SELECT
     survey.id,
+    account.avatar,
     users.username,
     survey.title,
     survey.description,
     survey.created_at,
     survey.updated_at
-  FROM
-    survey
+  FROM survey
   INNER JOIN users
     ON survey.user_id = users.id
+  INNER JOIN account
+    ON users.id = account.user_id;
+`
+
+export const findSurveyByIdQuery = `
+  SELECT
+    survey.id,
+    account.avatar,
+    users.username,
+    survey.title,
+    survey.description,
+    survey.created_at,
+    survey.updated_at
+  FROM survey
+  INNER JOIN users
+    ON survey.user_id = users.id
+  INNER JOIN account
+    ON users.id = account.user_id
   WHERE
     survey.id = $1;
 `

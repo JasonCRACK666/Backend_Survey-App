@@ -12,12 +12,18 @@ import {
   createCompleteSurveyQuery,
   createSurveyQuery,
   deleteAllSurveysQuery,
+  findAllSurveysQuery,
   findCompleteSurveyQuery,
   findSurveyByIdQuery,
   updateSurveyQuery,
 } from './SQLQuery'
 
 export class PostgreSQLSurveyRepository implements SurveyRepository {
+  public findAllSurveys = async (): Promise<SurveyUserEntity[]> => {
+    const { rows: surveys } = await pool.query(findAllSurveysQuery)
+    return surveys
+  }
+
   public findSurveyById = async (
     surveyId: string
   ): Promise<SurveyUserEntity | null> => {
