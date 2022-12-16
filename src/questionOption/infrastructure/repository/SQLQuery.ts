@@ -1,3 +1,14 @@
+export const findQuestionOptionsByQuestionIdQuery = `
+  SELECT
+    question_option.id,
+    question_option.option
+  FROM question_option
+  INNER JOIN question
+    ON question_option.question_id = question.id
+  WHERE
+    question_option.question_id = $1;
+`
+
 export const findQuestionOptionByIdQuery = `
   SELECT * FROM question_option WHERE id = $1;
 `
