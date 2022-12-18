@@ -4,12 +4,12 @@ import { AuthUseCase } from '../../application/AuthUseCase'
 import { RequestAuth } from '../utils/RequestAuth'
 
 export class AuthController {
-  constructor(private userUseCase: AuthUseCase) {}
+  constructor(private userUseCase: AuthUseCase) { }
 
   public postRegisterUser = async (req: Request, res: Response) => {
     try {
-      const { status, user } = await this.userUseCase.registerUser(req.body)
-      res.status(status).json({ status, user })
+      const { status, message } = await this.userUseCase.registerUser(req.body)
+      res.status(status).json({ status, message })
     } catch (error) {
       const err = error as { status: number; error: string }
       res.status(err.status).json(err)

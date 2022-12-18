@@ -14,11 +14,14 @@ export class AuthUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly accountRepository: AccountRepository
-  ) {}
+  ) { }
 
   public registerUser = async (
     userData: Omit<UserEntity, 'id' | 'is_admin'>
-  ) => {
+  ): Promise<{
+    status: number,
+    message: string
+  }> => {
     let userFoundForUsername: UserEntity | null
     try {
       userFoundForUsername = await this.userRepository.findUserByUsername(
@@ -93,7 +96,7 @@ export class AuthUseCase {
         error: 'No se ha podido crear su cuenta',
       }
 
-    return { status: 200, user: userRegistered }
+    return { status: 200, message: 'Usted de ha registrado' }
   }
 
   public loginUser = async ({
