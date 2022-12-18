@@ -10,6 +10,7 @@ export const MOCK_USER: UserEntity = {
   last_name: 'Kolki Martinez',
   password: '1234qwerasdf',
   username: 'JasonCrk',
+  is_admin: false,
 }
 
 export class MockUserRepository implements UserRepository {
@@ -44,9 +45,9 @@ export class MockUserRepository implements UserRepository {
     return user
   }
 
-  public deleteAllUsers = async (): Promise<void> => {}
+  public deleteAllUsers = async (): Promise<void> => { }
 
-  public deleteUser = async (id: string): Promise<void> => {}
+  public deleteUser = async (id: string): Promise<void> => { }
 
-  public updateUser = async (id: string): Promise<void> => {}
+  public updateUser = async (id: string): Promise<void> => { }
 }
