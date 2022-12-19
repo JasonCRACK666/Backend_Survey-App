@@ -26,6 +26,17 @@ export class AuthController {
     }
   }
 
+  public verifyToken = async (req: Request, res: Response) => {
+    try {
+      const { token } = req.body
+      const { status } = await this.userUseCase.verifyTokenIsValid(token)
+      res.status(status).json({ status })
+    } catch (error) {
+      const err = error as { status: number, error: string }
+      res.status(err.status).json(err)
+    }
+  }
+
   public getMyUser = async (req: RequestAuth, res: Response) => {
     try {
       const { status, user } = await this.userUseCase.getUserWithTheAccessToken(

@@ -21,6 +21,7 @@ const authController = new AuthController(authUseCase)
 
 router.post('/signUp', authController.postRegisterUser)
 router.post('/signIn', authController.postLoginUser)
+router.post('/verify', authController.verifyToken)
 router.get('/users/me', isAuthenticated, authController.getMyUser)
 
 export default router

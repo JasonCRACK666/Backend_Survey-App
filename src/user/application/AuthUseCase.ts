@@ -161,4 +161,26 @@ export class AuthUseCase {
       user,
     }
   }
+
+  public verifyTokenIsValid = async (token: string): Promise<{ status: number }> => {
+    let user!: Pick<UserEntity, 'id' | 'username' | 'is_admin'>
+    try {
+      user = jwt.verify(token, config.SECRET!) as Pick<UserEntity, 'id' | 'username' | 'is_admin'>
+    } catch (error) {
+      throw {
+        status: 400,
+        error: 'El token es invalido'
+      }
+    }
+
+    if (!user) throw {
+      status: 404,
+      error: 'El usuario no existe'
+    }
+
+    return {
+      status: 200
+    }
+  }
 }
+
