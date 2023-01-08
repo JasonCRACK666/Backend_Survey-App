@@ -31,6 +31,13 @@ router.get(
   isAuthenticated,
   surveyController.getIsCompleteSurvey
 )
+
 router.post('', isAuthenticated, surveyController.postCreateSurvey)
+
+router.delete(
+  '/:surveyId',
+  isAuthenticated,
+  surveyController.deleteOneSurveyById
+)
 
 export default router

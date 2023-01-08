@@ -1,3 +1,24 @@
+export const findAnswersTextByQuestionIdQuery = `
+  SELECT
+    anstx.id,
+    anstx.response,
+    account.avatar,
+    us.username
+  FROM answer_text anstx
+  INNER JOIN users us
+    ON us.id = anstx.user_id
+  INNER JOIN account
+    ON account.user_id = us.id
+  WHERE question_id = $1;
+`
+
+export const countSelectedOptionByOptionIdQuery = `
+  SELECT
+    COUNT(*) as selecteds
+  FROM answer_multi
+  WHERE option_id = $1
+`
+
 export const findAnswerTextByIdQuery = `
   SELECT
     id,

@@ -139,7 +139,7 @@ export class AuthUseCase {
 
   public getUserWithTheAccessToken = async (
     userId: string
-  ): Promise<{ status: number; user: Omit<UserEntity, 'password'> }> => {
+  ): Promise<{ status: number; user: Pick<UserEntity, 'id' | 'username' | 'is_admin'> }> => {
     let user: UserEntity | null
     try {
       user = await this.userRepository.findUserById(userId)
@@ -158,7 +158,11 @@ export class AuthUseCase {
 
     return {
       status: 200,
-      user,
+      user: {
+        id: user.id,
+        username: user.username,
+        is_admin: user.is_admin
+      },
     }
   }
 

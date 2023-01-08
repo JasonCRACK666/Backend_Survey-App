@@ -15,7 +15,7 @@ const isAuthenticated = async (
   next: NextFunction
 ) => {
   const authorization = req.headers.authorization
-  if (!authorization && authorization?.split(' ')[0] !== 'Bearer') {
+  if (!authorization || authorization?.split(' ')[0] !== 'Bearer') {
     res.status(401).json({
       status: 401,
       error: 'La autorización no se encuentra o es invalida',

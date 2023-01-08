@@ -25,6 +25,13 @@ export const findQuestionTypeByIdQuery = `
   SELECT * FROM question_type WHERE id = $1
 `
 
+export const findAllQuestionTypesQuery = `
+  SELECT
+    id,
+    name
+  FROM question_type;
+`
+
 export const createQuestionQuery = `
   INSERT INTO
     question (

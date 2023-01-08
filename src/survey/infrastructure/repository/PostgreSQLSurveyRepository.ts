@@ -9,9 +9,11 @@ import {
 import { SurveyRepository } from '../../domain/SurveyRepository'
 
 import {
+  countCompletedsSurveyQuery,
   createCompleteSurveyQuery,
   createSurveyQuery,
   deleteAllSurveysQuery,
+  deleteSurveyByIdQuery,
   findAllSurveysQuery,
   findCompleteSurveyQuery,
   findSurveyByIdQuery,
@@ -21,7 +23,7 @@ import {
 export class PostgreSQLSurveyRepository implements SurveyRepository {
   public findAllSurveys = async (
     userId: string
-  ): Promise<SurveyUserEntity[]> => {
+  ): Promise<Omit<SurveyEntity, 'user_id'>[]> => {
     const { rows: surveys } = await pool.query(findAllSurveysQuery, [userId])
     return surveys
   }
@@ -42,6 +44,15 @@ export class PostgreSQLSurveyRepository implements SurveyRepository {
       surveyId,
     ])
     return completeSurvey[0]
+  }
+
+  public countCompletesSurvey = async (
+    surveyId: string
+  ): Promise<{ completeds: number }> => {
+    const { rows } = await pool.query(countCompletedsSurveyQuery, [surveyId])
+    return {
+      completeds: Number(rows[0].completeds),
+    }
   }
 
   public createSurvey = async (
@@ -86,5 +97,9 @@ export class PostgreSQLSurveyRepository implements SurveyRepository {
 
   public deleteAllSurveys = async (): Promise<void> => {
     await pool.query(deleteAllSurveysQuery)
+  }
+
+  public deleteSurveyById = async (surveyId: string): Promise<void> => {
+    await pool.query(deleteSurveyByIdQuery, [surveyId])
   }
 }

@@ -1,3 +1,5 @@
+import { QuestionWithAnswers } from '../../question/domain/QuestionEntity'
+
 export interface SurveyEntity {
   id: string
   title: string
@@ -15,4 +17,10 @@ export interface SurveyUserEntity extends Omit<SurveyEntity, 'user_id'> {
 export interface SurveyComplete {
   user_id: string
   survey_id: string
+}
+
+export interface SurveyWithQuestionsAnswer
+  extends Omit<SurveyEntity, 'user_id'> {
+  completeds: number
+  questions: QuestionWithAnswers[]
 }

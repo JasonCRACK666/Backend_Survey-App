@@ -1,6 +1,16 @@
-import { AnswerMultiEntity, AnswerTextEntity } from './AnswerEntity'
+import {
+  AnswerMultiEntity,
+  AnswerTextDetail,
+  AnswerTextEntity,
+} from './AnswerEntity'
 
 export interface AnswerRepository {
+  findAnswersTextByQuestionId: (
+    questionId: string
+  ) => Promise<AnswerTextDetail[]>
+  countSelectedOptionByOptionId: (
+    optionId: string
+  ) => Promise<{ selecteds: number }>
   findAnswerTextById: (answerTextId: string) => Promise<AnswerTextEntity | null>
   findAnswerMultiById: (
     answerMultiId: string

@@ -20,4 +20,5 @@ export interface QuestionRepository {
   createQuestionType: (
     questionTypeData: QuestionTypeEntity
   ) => Promise<QuestionTypeEntity | null>
+  findAllQuestionTypes: () => Promise<QuestionTypeEntity[]>
 }

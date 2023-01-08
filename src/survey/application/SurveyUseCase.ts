@@ -1,4 +1,8 @@
-import { SurveyComplete, SurveyUserEntity } from '../domain/SurveyEntity'
+import {
+  SurveyComplete,
+  SurveyEntity,
+  SurveyUserEntity,
+} from '../domain/SurveyEntity'
 import { SurveyRepository } from '../domain/SurveyRepository'
 import { SurveyValue } from '../domain/SurveyValue'
 
@@ -6,7 +10,7 @@ import { QuestionRepository } from '../../question/domain/QuestionRepository'
 import {
   QuestionDetailEntity,
   QuestionDetailWithOptions,
-  QuestionWithOptions,
+  QuestionWithOptionsRecived,
 } from '../../question/domain/QuestionEntity'
 import { QuestionValue } from '../../question/domain/QuestionValue'
 
@@ -25,9 +29,9 @@ export class SurveyUseCase {
     userId: string
   ): Promise<{
     status: number
-    surveys: SurveyUserEntity[]
+    surveys: Omit<SurveyEntity, 'user_id'>[]
   }> => {
-    let allSurveys: SurveyUserEntity[]
+    let allSurveys: Omit<SurveyEntity, 'user_id'>[]
     try {
       allSurveys = await this.surveyRepository.findAllSurveys(userId)
     } catch (error) {
@@ -85,7 +89,7 @@ export class SurveyUseCase {
         error: 'No se ha encontrado ninguna pregunta',
       }
 
-    let finalQuestions: QuestionDetailWithOptions[] = []
+    const finalQuestions: QuestionDetailWithOptions[] = []
     for (const question of questions) {
       if (question.question_type === 'text') {
         finalQuestions.push(question)
@@ -162,30 +166,19 @@ export class SurveyUseCase {
 
     return {
       status: 200,
-      isCompleted: surveyCompleted !== null,
+      isCompleted: Boolean(surveyCompleted),
     }
   }
 
   public createSurveyQuestionsAndOptions = async (
     userId: string,
-    survey: { title: string; description: string },
-    questions: QuestionWithOptions[]
-  ): Promise<{ status: number; message: string }> => {
-    if (questions.length < 1)
-      throw {
-        status: 403,
-        error: 'Se require como mínimo tener una pregunta en la encuesta',
-      }
-
-    if (questions.length > 10)
-      throw {
-        status: 403,
-        error: 'Solo se puede añadir como máximo 10 preguntas a una encuesta',
-      }
-
+    title: string,
+    description: string,
+    questions: QuestionWithOptionsRecived[]
+  ): Promise<{ status: number; message: string; surveyId: string }> => {
     const surveyValue = new SurveyValue({
-      title: survey.title,
-      description: survey.description,
+      title,
+      description,
       user_id: userId,
     })
 
@@ -239,7 +232,7 @@ export class SurveyUseCase {
         for (const option of question.options) {
           const optionValue = new QuestionOptionValue({
             question_id: questionCreated!.id,
-            option: option,
+            option: option.value,
           })
 
           try {
@@ -257,6 +250,54 @@ export class SurveyUseCase {
       }
     }
 
-    return { status: 200, message: 'Se ha creado correctamente la encuesta' }
+    return {
+      status: 200,
+      message: 'Se ha creado correctamente la encuesta',
+      surveyId: surveyCreated.id,
+    }
+  }
+
+  public deleteOneSurvey = async (
+    surveyId: string,
+    username: string
+  ): Promise<{
+    status: number
+    message: string
+  }> => {
+    let survey: SurveyUserEntity | null
+    try {
+      survey = await this.surveyRepository.findSurveyById(surveyId)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo hacer la busqueda de la encuesta',
+      }
+    }
+
+    if (!survey)
+      throw {
+        status: 404,
+        error: 'La encuesta no existe',
+      }
+
+    if (survey.username !== username)
+      throw {
+        status: 401,
+        error: 'La encuesta no es de su pertenencia',
+      }
+
+    try {
+      await this.surveyRepository.deleteSurveyById(survey.id)
+    } catch (error) {
+      throw {
+        status: 500,
+        error: 'Hubo un error, no se puedo eliminar la encuesta',
+      }
+    }
+
+    return {
+      status: 200,
+      message: 'Se ha eliminado la encuesta correctamente',
+    }
   }
 }

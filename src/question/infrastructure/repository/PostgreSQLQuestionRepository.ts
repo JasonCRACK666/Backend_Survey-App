@@ -12,6 +12,7 @@ import {
   createQuestionTypeQuery,
   deleteAllQuestionsQuery,
   deleteQuestionQuery,
+  findAllQuestionTypesQuery,
   findQuestionByIdQuery,
   findQuestionsBySurveyIdQuery,
   findQuestionTypeByIdQuery,
@@ -58,7 +59,7 @@ export class PostgreSQLQuestionRepository implements QuestionRepository {
     return questionCreated
   }
 
-  createQuestionType = async (
+  public createQuestionType = async (
     questionTypeData: QuestionTypeEntity
   ): Promise<QuestionTypeEntity | null> => {
     await pool.query(createQuestionTypeQuery, [
@@ -77,5 +78,10 @@ export class PostgreSQLQuestionRepository implements QuestionRepository {
 
   public deleteAllQuestions = async (): Promise<void> => {
     await pool.query(deleteAllQuestionsQuery)
+  }
+
+  public findAllQuestionTypes = async (): Promise<QuestionTypeEntity[]> => {
+    const { rows: questionTypes } = await pool.query(findAllQuestionTypesQuery)
+    return questionTypes
   }
 }

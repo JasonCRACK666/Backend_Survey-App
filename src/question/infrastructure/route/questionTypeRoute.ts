@@ -20,5 +20,6 @@ router.post(
   [isAuthenticated, isAdminUser],
   questionTypeController.postCreateQuestionType
 )
+router.get('', questionTypeController.getQuestionTypes)
 
 export default router

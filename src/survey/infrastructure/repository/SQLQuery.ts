@@ -1,19 +1,12 @@
 export const findAllSurveysQuery = `
   SELECT
-    survey.id,
-    account.avatar,
-    users.username,
-    survey.title,
-    survey.description,
-    survey.created_at,
-    survey.updated_at
+    id,
+    title,
+    description,
+    created_at,
+    updated_at
   FROM survey
-  INNER JOIN users
-    ON survey.user_id = users.id
-  INNER JOIN account
-    ON users.id = account.user_id
-  WHERE
-    users.id = $1
+  WHERE user_id = $1
 `
 
 export const findSurveyByIdQuery = `
@@ -42,6 +35,14 @@ export const findCompleteSurveyQuery = `
   WHERE
     user_id = $1 AND
     survey_id = $2;
+`
+
+export const countCompletedsSurveyQuery = `
+  SELECT
+    COUNT(*) as completeds
+  FROM completed_surveys
+  WHERE
+    survey_id = $1
 `
 
 export const createSurveyQuery = `
@@ -88,4 +89,11 @@ export const deleteAllSurveysQuery = `
     survey
   WHERE
     id = id;
+`
+
+export const deleteSurveyByIdQuery = `
+  DELETE FROM
+    survey
+  WHERE
+    id = $1;
 `

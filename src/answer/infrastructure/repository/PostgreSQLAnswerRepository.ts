@@ -1,17 +1,45 @@
 import pool from '../../../db'
 
-import { AnswerTextEntity, AnswerMultiEntity } from '../../domain/AnswerEntity'
+import {
+  AnswerTextEntity,
+  AnswerMultiEntity,
+  AnswerTextDetail,
+} from '../../domain/AnswerEntity'
 
 import { AnswerRepository } from '../../domain/AnswerRepository'
 import {
+  countSelectedOptionByOptionIdQuery,
   createAnswerMultiQuery,
   createAnswerTextQuery,
   findAnswerMultiByIdQuery,
+  findAnswersTextByQuestionIdQuery,
   findAnswerTextByIdQuery,
 } from './SQLQuery'
 
 export class PostgreSQLAnswerRepository implements AnswerRepository {
-  findAnswerTextById = async (
+  public findAnswersTextByQuestionId = async (
+    questionId: string
+  ): Promise<AnswerTextDetail[]> => {
+    const { rows: answersText } = await pool.query(
+      findAnswersTextByQuestionIdQuery,
+      [questionId]
+    )
+    return answersText
+  }
+
+  public countSelectedOptionByOptionId = async (
+    optionId: string
+  ): Promise<{ selecteds: number }> => {
+    const { rows } = await pool.query(countSelectedOptionByOptionIdQuery, [
+      optionId,
+    ])
+
+    return {
+      selecteds: Number(rows[0].selecteds),
+    }
+  }
+
+  public findAnswerTextById = async (
     answerTextId: string
   ): Promise<AnswerTextEntity | null> => {
     const { rows: answerText } = await pool.query(findAnswerTextByIdQuery, [
@@ -20,7 +48,7 @@ export class PostgreSQLAnswerRepository implements AnswerRepository {
     return answerText[0]
   }
 
-  findAnswerMultiById = async (
+  public findAnswerMultiById = async (
     answerMultiId: string
   ): Promise<AnswerMultiEntity | null> => {
     const { rows: answerMulti } = await pool.query(findAnswerMultiByIdQuery, [
