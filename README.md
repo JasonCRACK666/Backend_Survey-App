@@ -2,7 +2,7 @@
 
 ## USER
 
-- Login 
+- Login
 - Register
 - Actualización de cuenta
 - Eliminación de cuenta
@@ -18,4 +18,3 @@
 ## ANSWER
 
 - Crear las respuestas a las preguntas que contenga la encuesta
-

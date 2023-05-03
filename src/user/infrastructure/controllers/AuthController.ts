@@ -4,12 +4,12 @@ import { AuthUseCase } from '../../application/AuthUseCase'
 import { RequestAuth } from '../utils/RequestAuth'
 
 export class AuthController {
-  constructor(private userUseCase: AuthUseCase) { }
+  constructor(private userUseCase: AuthUseCase) {}
 
   public postRegisterUser = async (req: Request, res: Response) => {
     try {
-      const { status, message } = await this.userUseCase.registerUser(req.body)
-      res.status(status).json({ status, message })
+      const userResponse = await this.userUseCase.registerUser(req.body)
+      res.status(userResponse.status).json(userResponse)
     } catch (error) {
       const err = error as { status: number; error: string }
       res.status(err.status).json(err)
@@ -32,7 +32,7 @@ export class AuthController {
       const { status } = await this.userUseCase.verifyTokenIsValid(token)
       res.status(status).json({ status })
     } catch (error) {
-      const err = error as { status: number, error: string }
+      const err = error as { status: number; error: string }
       res.status(err.status).json(err)
     }
   }

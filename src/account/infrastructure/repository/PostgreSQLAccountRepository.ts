@@ -28,10 +28,7 @@ export class PostgreSQLAccountRepository implements AccountRepository {
   public updateAccount = async (
     id: string,
     accountData: Partial<
-      Omit<
-        AccountEntity,
-        'id' | 'user_id' | 'created_at' | 'updated_at'
-      >
+      Omit<AccountEntity, 'id' | 'user_id' | 'created_at' | 'updated_at'>
     >
   ): Promise<AccountUserEntity | null> => {
     await pool.query(updateAccountUserQuery, [

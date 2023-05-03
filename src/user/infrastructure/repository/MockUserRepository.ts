@@ -45,9 +45,9 @@ export class MockUserRepository implements UserRepository {
     return user
   }
 
-  public deleteAllUsers = async (): Promise<void> => { }
+  public deleteAllUsers = async (): Promise<void> => {}
 
-  public deleteUser = async (id: string): Promise<void> => { }
+  public deleteUser = async (id: string): Promise<void> => {}
 
-  public updateUser = async (id: string): Promise<void> => { }
+  public updateUser = async (id: string): Promise<void> => {}
 }

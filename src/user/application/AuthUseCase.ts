@@ -14,12 +14,12 @@ export class AuthUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly accountRepository: AccountRepository
-  ) { }
+  ) {}
 
   public registerUser = async (
     userData: Omit<UserEntity, 'id' | 'is_admin'>
   ): Promise<{
-    status: number,
+    status: number
     message: string
   }> => {
     let userFoundForUsername: UserEntity | null
@@ -139,7 +139,10 @@ export class AuthUseCase {
 
   public getUserWithTheAccessToken = async (
     userId: string
-  ): Promise<{ status: number; user: Pick<UserEntity, 'id' | 'username' | 'is_admin'> }> => {
+  ): Promise<{
+    status: number
+    user: Pick<UserEntity, 'id' | 'username' | 'is_admin'>
+  }> => {
     let user: UserEntity | null
     try {
       user = await this.userRepository.findUserById(userId)
@@ -161,30 +164,35 @@ export class AuthUseCase {
       user: {
         id: user.id,
         username: user.username,
-        is_admin: user.is_admin
+        is_admin: user.is_admin,
       },
     }
   }
 
-  public verifyTokenIsValid = async (token: string): Promise<{ status: number }> => {
+  public verifyTokenIsValid = async (
+    token: string
+  ): Promise<{ status: number }> => {
     let user!: Pick<UserEntity, 'id' | 'username' | 'is_admin'>
     try {
-      user = jwt.verify(token, config.SECRET!) as Pick<UserEntity, 'id' | 'username' | 'is_admin'>
+      user = jwt.verify(token, config.SECRET!) as Pick<
+        UserEntity,
+        'id' | 'username' | 'is_admin'
+      >
     } catch (error) {
       throw {
         status: 400,
-        error: 'El token es invalido'
+        error: 'El token es invalido',
       }
     }
 
-    if (!user) throw {
-      status: 404,
-      error: 'El usuario no existe'
-    }
+    if (!user)
+      throw {
+        status: 404,
+        error: 'El usuario no existe',
+      }
 
     return {
-      status: 200
+      status: 200,
     }
   }
 }
-
