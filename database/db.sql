@@ -1,10 +1,6 @@
 CREATE DATABASE api_survey;
 CREATE DATABASE api_survey_test;
 
-DROP DATABASE api_survey;
-DROP DATABASE api_survey_test;
--- CREATE DATABASE api_survey_test;
-
 CREATE EXTENSION "uuid-ossp";
 
 CREATE TABLE USERS (
