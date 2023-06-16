@@ -3,6 +3,8 @@ CREATE DATABASE api_survey_test;
 
 CREATE EXTENSION "uuid-ossp";
 
+USE api_survey;
+
 CREATE TABLE USERS (
   id UUID NOT NULL PRIMARY KEY,
   username VARCHAR(40) NOT NULL UNIQUE CHECK(LENGTH(username) >= 3),
